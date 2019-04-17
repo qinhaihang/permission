@@ -19,7 +19,7 @@ Add it in your root build.gradle at the end of repositories:
 	        implementation 'com.github.qinhaihang:permission:Tag'
 	}
 ```
-Tag 为需要使用的版本，当前最新的版本为 v1.0 。
+Tag 为需要使用的版本，例如当前最新的版本为 v1.1 。
 
 
 #### 基本API方法介绍
