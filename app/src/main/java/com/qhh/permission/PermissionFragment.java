@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import com.qhh.permission.bean.Permission;
 import com.qhh.permission.callback.ICallbackManager;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,23 +31,29 @@ import java.util.Random;
 public class PermissionFragment extends Fragment {
 
     private static final int MAX_TRY_COUNT = 10; //requesCode 刷新次数
-    private FragmentActivity mActivity;
 
     private SparseArray<ICallbackManager.IPermissionListCallback> mListCallbacks = new SparseArray<>();
     private Random mCodeGenerator = new Random();
+    private WeakReference<FragmentActivity> mActivityWeakRef;
 
     public PermissionFragment() {
     }
 
-    public static PermissionFragment getInstance() {
-        return new PermissionFragment();
+    private static class SingletonHolder{
+        private static final PermissionFragment INSTANCE = new PermissionFragment();
+    }
+
+    public static PermissionFragment getInstance(){
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mActivity = getActivity();
+        if(getActivity() != null){
+            mActivityWeakRef = new WeakReference<>(getActivity());
+        }
     }
 
     private int createRequestCode() {
@@ -73,11 +80,11 @@ public class PermissionFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int grs = 0;
             for (String permission : permissions) {
-                int permissionStatus = (int) ContextCompat.checkSelfPermission(mActivity, permission);
+                int permissionStatus = (int) ContextCompat.checkSelfPermission(mActivityWeakRef.get(), permission);
                 grs += permissionStatus;
                 if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
 
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission)) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(mActivityWeakRef.get(), permission)) {
                         //之前用户禁止过该权限，提示用户权限用处，以及是否重新去开启
                         denyPermissionList.add(permission);
                     } else {
@@ -137,7 +144,7 @@ public class PermissionFragment extends Fragment {
             needSetPermissions.add(new Permission(
                     permission,
                     grantResult == PackageManager.PERMISSION_GRANTED,
-                    ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission)
+                    ActivityCompat.shouldShowRequestPermissionRationale(mActivityWeakRef.get(), permission)
             ));
 
         }

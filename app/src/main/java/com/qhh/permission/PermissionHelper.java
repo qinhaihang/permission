@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import com.qhh.permission.bean.Permission;
 import com.qhh.permission.callback.ICallbackManager;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -26,10 +27,10 @@ import java.util.List;
 public class PermissionHelper {
 
     private static final String REQUEST_PERMISSION = "request_permission";
-    private static FragmentActivity mActivity;
 
     private ICallbackManager.IDenyPermissionCallback mDenyPermissionCallback;
     private ICallbackManager.IRequestCallback mRequestCallback;
+    private WeakReference<FragmentActivity> mWeakActivityRef;
 
     private static class Holder{
         private static PermissionHelper INSTANCE = new PermissionHelper();
@@ -43,12 +44,12 @@ public class PermissionHelper {
     }
 
     public PermissionHelper init(FragmentActivity activity) {
-        mActivity = activity;
+        mWeakActivityRef = new WeakReference<>(activity);
         return Holder.INSTANCE;
     }
 
     private PermissionFragment getFragment() {
-        FragmentManager manager = mActivity.getSupportFragmentManager();
+        FragmentManager manager = mWeakActivityRef.get().getSupportFragmentManager();
         PermissionFragment fragment = (PermissionFragment) manager.findFragmentByTag(REQUEST_PERMISSION);
 
         if (null == fragment) {
