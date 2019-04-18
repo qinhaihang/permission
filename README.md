@@ -19,7 +19,7 @@ Add it in your root build.gradle at the end of repositories:
 	        implementation 'com.github.qinhaihang:permission:Tag'
 	}
 ```
-Tag 为需要使用的版本，当前最新的版本为 v1.0 。
+Tag 为需要使用的版本，例如当前最新的版本为 v1.1 。
 
 
 #### 基本API方法介绍
@@ -65,7 +65,7 @@ Tag 为需要使用的版本，当前最新的版本为 v1.0 。
                 .setmDenyPermissionCallback(new ICallbackManager.IDenyPermissionCallback() {
                     @Override
                     public void onDenyPermissions(List<String> permissions) {
-			//回调出那些权限是没有开启的，可以在这重新调用 requestPermissions 请求
+			//需要重新申请权限的时候，回调出那些权限是没有开启的，可以在这重新调用 requestPermissions 请求
                     }
                 })
                 .setmRequestCallback(new ICallbackManager.IRequestCallback() {
