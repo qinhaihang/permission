@@ -159,4 +159,17 @@ public class PermissionHelper {
         });
     }
 
+    /**
+     * 释放 fragment
+     */
+    public void release(){
+        FragmentManager manager = mWeakActivityRef.get().getSupportFragmentManager();
+        PermissionFragment fragment = (PermissionFragment) manager.findFragmentByTag(REQUEST_PERMISSION);
+
+        if(fragment != null){
+            manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+            manager.executePendingTransactions();
+        }
+    }
+
 }

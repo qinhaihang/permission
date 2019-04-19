@@ -39,12 +39,8 @@ public class PermissionFragment extends Fragment {
     public PermissionFragment() {
     }
 
-    private static class SingletonHolder{
-        private static final PermissionFragment INSTANCE = new PermissionFragment();
-    }
-
     public static PermissionFragment getInstance(){
-        return SingletonHolder.INSTANCE;
+        return new PermissionFragment();
     }
 
     @Override
