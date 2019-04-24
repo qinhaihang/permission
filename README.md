@@ -77,5 +77,9 @@ Tag 为需要使用的版本，例如当前最新的版本为 v1.1 。
                 .checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 ```
 
+#### 在页面结束 ondestroy release
+```java
+ PermissionHelper.getInstance().release();
+```
 
 
