@@ -170,6 +170,8 @@ public class PermissionHelper {
             manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
             manager.executePendingTransactions();
         }
+
+        mWeakActivityRef.clear();
     }
 
 }
