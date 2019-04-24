@@ -166,7 +166,7 @@ public class PermissionHelper {
         FragmentManager manager = mWeakActivityRef.get().getSupportFragmentManager();
         PermissionFragment fragment = (PermissionFragment) manager.findFragmentByTag(REQUEST_PERMISSION);
 
-        if(fragment != null){
+        if(!manager.isDestroyed() && fragment != null){
             manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
             manager.executePendingTransactions();
         }
