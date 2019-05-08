@@ -163,15 +163,19 @@ public class PermissionHelper {
      * 释放 fragment
      */
     public void release(){
-        FragmentManager manager = mWeakActivityRef.get().getSupportFragmentManager();
-        PermissionFragment fragment = (PermissionFragment) manager.findFragmentByTag(REQUEST_PERMISSION);
 
-        if(!manager.isDestroyed() && fragment != null){
-            manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
-            manager.executePendingTransactions();
+        if(mWeakActivityRef != null && mWeakActivityRef.get() != null){
+            FragmentManager manager = mWeakActivityRef.get().getSupportFragmentManager();
+            PermissionFragment fragment = (PermissionFragment) manager.findFragmentByTag(REQUEST_PERMISSION);
+
+            if(!manager.isDestroyed() && fragment != null){
+                manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+                manager.executePendingTransactions();
+            }
+
+            mWeakActivityRef.clear();
         }
 
-        mWeakActivityRef.clear();
     }
 
 }
